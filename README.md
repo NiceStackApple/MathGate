@@ -1,30 +1,30 @@
 # MathGate
 
-MathGate adalah aplikasi Android untuk membantu mengatur screen time dengan cara yang lebih interaktif.
+MathGate adalah aplikasi Android untuk membantu mengatur screen time dengan cara yang lebih interaktif dan menyenangkan.
 
-Saat waktu penggunaan habis, pengguna perlu menyelesaikan tantangan matematika untuk mendapatkan tambahan waktu akses. Aplikasi ini dibuat untuk membantu mengurangi distraksi, meningkatkan fokus, dan membangun kebiasaan digital yang lebih sehat.
+Aplikasi ini cocok digunakan untuk:
+- Orang tua yang ingin membantu mengurangi penggunaan HP berlebihan pada anak
+- Pelajar yang ingin lebih fokus belajar
+- Pengguna yang ingin membatasi distraksi dan penggunaan gadget sehari-hari
 
-## Fitur Utama
+Saat waktu penggunaan habis, pengguna perlu menyelesaikan tantangan matematika untuk mendapatkan tambahan waktu akses.
+
+## Fitur
 
 - Batas waktu penggunaan harian
-- Tantangan matematika untuk menambah waktu akses
+- Tantangan matematika untuk membuka akses kembali
 - Tingkat kesulitan soal yang bisa disesuaikan
 - Mode penyamaran ikon aplikasi
-- Berjalan di latar belakang agar fitur tetap aktif
+- Tetap berjalan di latar belakang agar fitur tetap aktif
 
-## Cara Install
+## Install
 
-1. Buka folder `.build-outputs`
-2. Download file `MathGate v1.0.apk`
-3. Buka file APK di HP Android
-4. Jika muncul peringatan dari Android/Play Protect, pilih **Detail** lalu **Tetap Instal**
+1. Download file APK dari folder `.build-outputs`
+2. Install APK di perangkat Android
+3. Jika muncul peringatan dari Play Protect, pilih **Detail** → **Tetap instal**
 
-> Catatan: Peringatan bisa muncul karena aplikasi diinstal dari luar Play Store, bukan karena aplikasi ini berbahaya.
-
-## Pengaturan Awal
-
-Setelah aplikasi dibuka, ikuti instruksi di dalam aplikasi untuk mengaktifkan izin yang dibutuhkan, seperti akses penggunaan dan aksesibilitas, agar fitur screen time dapat berjalan dengan baik.
+> Catatan: Peringatan dapat muncul karena aplikasi diinstal dari luar Play Store.
 
 ## Tujuan
 
-MathGate dibuat sebagai proyek sederhana untuk membantu pengguna memakai HP dengan lebih sadar, produktif, dan tidak berlebihan.
+MathGate dibuat sebagai proyek sederhana untuk membantu membangun kebiasaan digital yang lebih sehat, produktif, dan sadar screen time.
