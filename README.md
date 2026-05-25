@@ -1,54 +1,46 @@
-# ⏱️ MathGate v1.0 - Aplikasi Pengunci Screen Time Interaktif
+# MathGate
 
-Selamat datang di repositori **MathGate**, aplikasi manajemen screen time interaktif untuk Android yang cerdas dan efisien. Aplikasi ini menjaga produktivitas harian Anda atau anak-anak dengan mengunci perangkat secara otomatis ketika kuota waktu harian habis. Untuk membuka kembali perangkat, pengguna harus menyelesaikan **Tantangan Matematika** yang disesuaikan tingkat kesulitannya!
+> ⚠️ **Penting — Harap Dibaca Sebelum Menggunakan**
+>
+> MathGate menggunakan izin akses tertentu untuk membantu membatasi penggunaan perangkat, seperti fitur overlay dan pembatasan akses aplikasi ketika waktu penggunaan habis.
+>
+> Karena cara kerja tersebut, beberapa aplikasi perbankan atau mobile banking (contohnya Livin’, BRImo, dan sejenisnya) dapat mendeteksi MathGate sebagai potensi ancaman keamanan atau malware, meskipun aplikasi ini tidak mengandung virus ataupun pencurian data.
+>
+> Dalam beberapa kasus, hal ini dapat menyebabkan aplikasi perbankan membatasi akses atau melakukan pembekuan sementara akun demi alasan keamanan apabila fitur sleep/pause MathGate tidak diaktifkan sebelum membuka aplikasi perbankan.
+>
+> Untuk sementara, MathGate lebih direkomendasikan untuk:
+>
+> * Anak-anak
+> * Pelajar yang belum menggunakan mobile banking di perangkat yang sama
+>
+> Gunakan dengan bijak dan pahami risiko kompatibilitas dengan aplikasi keamanan/perbankan Android (Pengembang tidak akn bertanggungjawab atas kebekuan akun perbankan yang terjadi apabila itu karena user mengabaikan instruksi ini).
 
-Aplikasi ini juga dilengkapi fitur penyamaran ikon & nama aplikasi (Disguise Mode) serta berjalan di latar belakang sebagai layanan sistem yang aman.
+MathGate adalah aplikasi Android untuk membantu mengatur screen time dengan cara yang lebih interaktif dan menantang.
 
----
+Aplikasi ini cocok digunakan untuk:
 
-## 📥 Panduan Cara Download & Install Aplikasi
+* Orang tua yang ingin membantu mengurangi doom scrolling atau penggunaan HP berlebihan pada anak
+* Pelajar yang ingin lebih fokus belajar dan mengurangi distraksi
+* Pengguna yang ingin membangun kebiasaan digital yang lebih sehat
 
-Karena aplikasi ini tidak dipublikasikan ke Google Play Store (untuk menghindari biaya pendaftaran pengembang), Anda dapat mengunduhnya secara langsung dan gratis dari repositori GitHub ini.
+Saat waktu penggunaan habis, pengguna perlu menyelesaikan tantangan matematika untuk mendapatkan tambahan waktu akses.
 
-### Langkah 1: Mengunduh File APK
-1. Di bagian atas halaman GitHub ini, buka folder **`.build-outputs`**.
-2. Klik pada file bernama **`app-debug.apk`**.
-3. Klik tombol **Download** (atau ikon unduh/tombol "Raw") di sebelah kanan atas untuk mulai mengunduh file APK ke perangkat Anda.
+## Fitur
 
-### Langkah 2: Mengaktifkan Izin Sumber Tidak Dikenal (Unknown Sources)
-Sebelum dapat menginstal file `.apk` secara langsung, Android memerlukan izin instalasi dari luar Play Store:
-1. Buka **Pengaturan (Settings)** di HP Android Anda.
-2. Cari menu **Keamanan & Privasi** (Security or Privacy) atau cari langsung kata kunci *"Install aplikasi yang tidak dikenal"* (Install unknown apps).
-3. Pilih aplikasi yang Anda gunakan untuk mengunduh (misalnya *Google Chrome* atau *File Manager*), lalu aktifkan opsi **Izinkan dari sumber ini** (Allow from this source).
+* Batas waktu penggunaan harian
+* Tantangan matematika untuk membuka akses kembali
+* Tingkat kesulitan soal yang bisa disesuaikan
+* Mode penyamaran ikon aplikasi
+* Berjalan di latar belakang agar fitur tetap aktif
 
-### Langkah 3: Menginstal Aplikasi & Mengatasi Peringatan Play Protect
-Android terkadang mendeteksi file APK independen buatan sendiri (yang tidak diajukan ke Google) sebagai "Aplikasi Tidak Dikenal" melalui Google Play Protect. 
-- **Aplikasi ini 100% aman!** Kode sumber aplikasi ini sepenuhnya bersih dari malware, spyware, atau kode berbahaya lainnya.
-- **Cara Melewati Peringatan Play Protect:**
-  1. Buka file APK yang sudah diunduh untuk memulai instalasi.
-  2. Jika muncul kotak dialog peringatan dari Google Play Protect (biasanya berwarna merah/kuning), klik tulisan **"Detail"** atau **"Selengkapnya"** (More details).
-  3. Klik pilihan **"Tetap Instal"** (Install anyway) untuk melanjutkan pemasangan hingga selesai.
+## Install
 
----
+1. Download file APK dari folder `.build-outputs`
+2. Install APK di perangkat Android
+3. Jika muncul peringatan dari Play Protect, pilih **Detail** → **Tetap instal**
 
-## 🛠️ Langkah Konfigurasi Pertama Kali (Penting!)
+> Catatan: Peringatan dapat muncul karena aplikasi diinstal dari luar Play Store.
 
-Agar fungsi penguncian otomatis (Math Lock Screen) berjalan dengan lancar dan tidak ditutup oleh sistem Android, lakukan langkah berikut saat pertama kali membuka aplikasi:
+## Tujuan
 
-1. **Buat PIN Master:** Masukkan PIN master 4 angka untuk mengamankan pengaturan agar tidak bisa diubah dengan mudah oleh orang lain.
-2. **Aktifkan Akses Data Penggunaan (Usage Access):**
-   - Ikuti tombol petunjuk di aplikasi untuk masuk ke pengaturan Android, lalu aktifkan akses penggunaan untuk **Layanan Sistem (MathGate)**. Izin ini diperlukan agar aplikasi dapat membaca durasi penggunaan HP Anda secara akurat.
-3. **Aktifkan Layanan Aksesibilitas (Accessibility Service):**
-   - Buka menu Aksesibilitas HP lewat petunjuk aplikasi, pilih *Aplikasi Terinstal* / *Layanan Terinstal*, ketuk **Layanan Sistem (MathGate)** dan aktifkan tombolnya. Izin ini sangat penting agar aplikasi dapat memunculkan layar kunci matematika secara absolut di atas aplikasi lainnya saat kuota habis.
-4. **Kecualikan dari Optimasi Baterai (Battery Optimization Bypass):**
-   - Agar layanan background tidak dimatikan paksa oleh sistem Android saat HP dalam kondisi standby, pastikan untuk menonaktifkan optimasi baterai (set ke *Tidak Dibatasi* / *Unrestricted*) untuk aplikasi ini melalui pengaturan info aplikasi.
-
----
-
-## ✨ Fitur-Fitur Utama di MathGate v1.0
-- **Math Lock Gate:** Mengunci HP secara otomatis saat kuota harian habis. Untuk memperpanjang waktu penggunaan, Anda harus menjawab pertanyaan matematika dengan benar sesuai tingkat kesulitan (Sangat Mudah, Mudah, Sedang, Sulit).
-- **Disguise Cover (Mode Penyamaran):** Samarkan ikon dan nama aplikasi menjadi aplikasi biasa (seperti Kalkulator, Informasi Cuaca, Catatan Sistem, dll.) agar tidak dicurigai atau dihapus sembarangan.
-- **Layanan Latar Belakang & Notifikasi Sistem:** Layanan background berjalan dengan andal menggunakan notifikasi sistem yang disamarkan (*Sistem Android*) agar ramah memori dan tidak mengganggu kenyamanan visual pengguna.
-- **Voluntary Challenge (Tantangan Sukarela):** Pengguna bisa mengetuk notifikasi harian untuk berlatih matematika kapan saja. Jika sisa kuota masih ada, pengguna dapat keluar dari tantangan matematika kapan saja dengan menekan tombol keluar di kanan atas.
-
-Selamat menggunakan! Jadikan waktu layar Anda lebih bijak dan produktif. 🚀
+MathGate dibuat sebagai proyek sederhana untuk membantu membangun kebiasaan digital yang lebih sehat, fokus, dan sadar screen time.
