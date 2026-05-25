@@ -13,7 +13,7 @@
 > * Anak-anak
 > * Pelajar yang belum menggunakan mobile banking di perangkat yang sama
 >
-> Gunakan dengan bijak dan pahami risiko kompatibilitas dengan aplikasi keamanan/perbankan Android (Pengembang tidak akn bertanggungjawab atas kebekuan akun perbankan yang terjadi apabila itu karena user mengabaikan instruksi ini).
+> Gunakan dengan bijak dan pahami risiko kompatibilitas dengan aplikasi keamanan/perbankan Android (Pengembang tidak akan bertanggungjawab atas kebekuan akun perbankan yang terjadi).
 
 MathGate adalah aplikasi Android untuk membantu mengatur screen time dengan cara yang lebih interaktif dan menantang.
 
