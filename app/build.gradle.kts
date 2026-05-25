@@ -119,3 +119,13 @@ dependencies {
   "ksp"(libs.androidx.room.compiler)
   "ksp"(libs.moshi.kotlin.codegen)
 }
+
+tasks.register<Copy>("copyApkToBuildOutputs") {
+  from(layout.buildDirectory.dir("outputs/apk/debug").map { it.file("app-debug.apk") })
+  into(rootProject.file(".build-outputs"))
+  rename { "MathGate v1.0.apk" }
+}
+
+tasks.matching { it.name.startsWith("assemble") }.configureEach {
+  finalizedBy("copyApkToBuildOutputs")
+}

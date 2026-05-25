@@ -123,11 +123,17 @@ class MainActivity : ComponentActivity() {
                                 val iconChanged = oldIconIndex != selectedIconIdx
                                 viewModel.updateSettings(quota, diff, reward, minQ, appName, selectedIconIdx)
                                 if (iconChanged) {
-                                    changeAppDisguise(this@MainActivity, selectedIconIdx)
                                     Toast.makeText(this@MainActivity, "Pengaturan disamarkan! Aplikasi akan ditutup untuk menerapkan nama dan ikon baru...", Toast.LENGTH_LONG).show()
                                     window.decorView.postDelayed({
+                                        // Cleanly close activity windows first to tear down active InputDispatcher channels
                                         finishAffinity()
-                                    }, 1200)
+                                        
+                                        // Perform component switch with delay
+                                        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                            changeAppDisguise(applicationContext, selectedIconIdx)
+                                            System.exit(0)
+                                        }, 150)
+                                    }, 1500)
                                 } else {
                                     Toast.makeText(this@MainActivity, "Pengaturan berhasil diperbarui!", Toast.LENGTH_SHORT).show()
                                 }
