@@ -75,13 +75,17 @@ class GateActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         prefs = AppPreferences(this)
+        if (prefs.isSleepMode) {
+            finish()
+            return
+        }
+        enableEdgeToEdge()
 
-        // Disable standard Back button functionality during Lock Screen unless they have quota left
+        // Disable standard Back button functionality during Lock Screen unless they have quota left or Sleep Mode is active
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (prefs.remainingMinutes > 0) {
+                if (prefs.remainingMinutes > 0 || prefs.isSleepMode) {
                     finish()
                 } else {
                     Toast.makeText(this@GateActivity, "Selesaikan soal matematika untuk membuka HP!", Toast.LENGTH_SHORT).show()
@@ -299,7 +303,14 @@ fun GateUnlockFlow(
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF64748B)
                         )
-                        if (prefs.remainingMinutes > 0) {
+                        if (prefs.isSleepMode) {
+                            Text(
+                                text = "💤 Mode Tidur Aktif",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xFF8B5CF6)
+                            )
+                        } else if (prefs.remainingMinutes > 0) {
                             Text(
                                 text = "Sisa waktu HP: ${prefs.remainingMinutes}m",
                                 fontSize = 11.sp,
@@ -340,7 +351,7 @@ fun GateUnlockFlow(
                             )
                         }
 
-                        if (prefs.remainingMinutes > 0) {
+                        if (prefs.remainingMinutes > 0 || prefs.isSleepMode) {
                             IconButton(
                                 onClick = { (context as? Activity)?.finish() },
                                 modifier = Modifier
@@ -367,7 +378,7 @@ fun GateUnlockFlow(
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(RoundedCornerShape(3.dp))
-                        .background(if (prefs.remainingMinutes > 0) Color(0xFF10B981) else Color(0xFFEF4444))
+                        .background(if (prefs.remainingMinutes > 0 || prefs.isSleepMode) Color(0xFF10B981) else Color(0xFFEF4444))
                 )
             }
 

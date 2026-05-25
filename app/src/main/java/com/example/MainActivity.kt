@@ -1047,6 +1047,98 @@ fun SettingsDashboardScreen(
             Text("Uji Layar Kunci (Buka Gate)", fontWeight = FontWeight.Bold)
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // SLEEP MODE CARD & SAFE DEVICE DECLARATION
+        var isSleepMode by remember { mutableStateOf(prefs.isSleepMode) }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+            border = androidx.compose.foundation.BorderStroke(1.dp, if (isSleepMode) Color(0xFF8B5CF6) else Color(0xFF334155)),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(18.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Shield,
+                        contentDescription = "Safe Shield",
+                        tint = Color(0xFF10B981),
+                        modifier = Modifier.size(22.dp)
+                    )
+                    Text(
+                        text = "Deklarasi Keamanan & m-Banking",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Aplikasi MathGate 100% aman dan bebas malware. Aplikasi perbankan (seperti Livin by Mandiri) mendeteksi Layanan Aksesibilitas yang aktif sebagai potensi keamanan (untuk mencegah pembacaan layar ketat secara tidak sah).\n\nJika ingin menggunakan aplikasi perbankan Anda dengan normal, aktifkan Mode Tidur di bawah ini untuk menonaktifkan pemblokiran sementara.",
+                    fontSize = 11.sp,
+                    color = Color(0xFF94A3B8),
+                    lineHeight = 15.sp
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                HorizontalDivider(color = Color(0xFF334155), thickness = 0.8.dp)
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "💤 Mode Tidur (Sleep Mode)",
+                            fontWeight = FontWeight.Bold,
+                            color = if (isSleepMode) Color(0xFFA78BFA) else Color.White,
+                            fontSize = 13.sp
+                        )
+                        Text(
+                            text = if (isSleepMode) "Pemblokiran Nonaktif" else "Pemblokiran Aktif",
+                            fontSize = 10.sp,
+                            color = Color(0xFF94A3B8)
+                        )
+                    }
+                    Switch(
+                        checked = isSleepMode,
+                        onCheckedChange = { checked ->
+                            prefs.isSleepMode = checked
+                            isSleepMode = checked
+                            // Notify ScreenTimeService to update status and notification immediately
+                            val serviceIntent = Intent(context, ScreenTimeService::class.java)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                context.startForegroundService(serviceIntent)
+                            } else {
+                                context.startService(serviceIntent)
+                            }
+                            Toast.makeText(
+                                context,
+                                if (checked) "Mode Tidur Aktif! Pemblokiran dihentikan." else "Mode Tidur Mati! Pemblokiran diaktifkan kembali.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = Color(0xFF8B5CF6),
+                            checkedTrackColor = Color(0xFF8B5CF6).copy(alpha = 0.4f)
+                        )
+                    )
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // Editable settings sheet
@@ -1234,6 +1326,103 @@ fun SettingsDashboardScreen(
             Icon(Icons.Default.Delete, contentDescription = "Reset Master", tint = Color(0xFFEF4444))
             Spacer(modifier = Modifier.width(8.dp))
             Text("Reset Pengaturan & Set Ulang PIN (Master)", color = Color(0xFFEF4444), fontWeight = FontWeight.SemiBold)
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Credits Section - Icons & Social Link Buttons
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+        ) {
+            Text(
+                text = "Dukungan & Kredit Pengembang",
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF64748B),
+                letterSpacing = 1.sp
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Github
+                IconButton(
+                    onClick = {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/NiceStackApple"))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Tidak dapat membuka peramban.", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(Color(0xFF24292F), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Code,
+                        contentDescription = "GitHub NiceStackApple",
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                // Instagram
+                IconButton(
+                    onClick = {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/nicprojects_/"))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Tidak dapat membuka peramban.", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(Color(0xFFE1306C), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt,
+                        contentDescription = "Instagram nicprojects_",
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                // Saweria
+                IconButton(
+                    onClick = {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://saweria.co/nictsr"))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Tidak dapat membuka peramban.", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(Color(0xFFF15A24), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Donasi Saweria",
+                        tint = Color.White,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Handcrafted with ♥ by NiceStackApple",
+                fontSize = 10.sp,
+                color = Color(0xFF475569)
+            )
         }
     }
 }

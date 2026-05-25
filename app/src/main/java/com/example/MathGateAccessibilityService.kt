@@ -16,7 +16,7 @@ class MathGateAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        if (prefs.isSetupCompleted && prefs.remainingMinutes <= 0) {
+        if (prefs.isSetupCompleted && !prefs.isSleepMode && prefs.remainingMinutes <= 0) {
             val isStateChanged = event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
             if (isStateChanged) {
                 val packageName = event.packageName?.toString() ?: ""
@@ -38,7 +38,7 @@ class MathGateAccessibilityService : AccessibilityService() {
     }
 
     override fun onKeyEvent(event: KeyEvent): Boolean {
-        if (prefs.isSetupCompleted && prefs.remainingMinutes <= 0) {
+        if (prefs.isSetupCompleted && !prefs.isSleepMode && prefs.remainingMinutes <= 0) {
             val keyCode = event.keyCode
             val action = event.action
             

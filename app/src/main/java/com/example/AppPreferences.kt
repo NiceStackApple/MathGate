@@ -25,6 +25,7 @@ class AppPreferences(context: Context) {
         // Custom keys for developer-friendly simulation mode
         private const val KEY_SIMULATION_MODE = "simulation_mode"
         private const val KEY_LAST_TICK_TIME = "last_tick_time"
+        private const val KEY_SLEEP_MODE = "is_sleep_mode"
     }
 
     var isSetupCompleted: Boolean
@@ -70,6 +71,10 @@ class AppPreferences(context: Context) {
     var isSimulationMode: Boolean
         get() = prefs.getBoolean(KEY_SIMULATION_MODE, false)
         set(value) = prefs.edit().putBoolean(KEY_SIMULATION_MODE, value).apply()
+
+    var isSleepMode: Boolean
+        get() = prefs.getBoolean(KEY_SLEEP_MODE, false)
+        set(value) = prefs.edit().putBoolean(KEY_SLEEP_MODE, value).apply()
 
     var pinLength: Int
         get() = prefs.getInt("parent_pin_length", 4)

@@ -115,6 +115,10 @@ class ScreenTimeService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     private fun decrementQuota() {
+        if (prefs.isSleepMode) {
+            updateNotification()
+            return
+        }
         // Daily reset check
         val didReset = prefs.checkAndResetDailyQuota()
         if (didReset) {
@@ -179,8 +183,12 @@ class ScreenTimeService : Service() {
     }
 
     private fun buildNotification(): Notification {
-        val remaining = prefs.remainingMinutes
-        val text = "⏱ Sisa waktu: $remaining menit"
+        val text = if (prefs.isSleepMode) {
+            "💤 Mode Tidur Aktif (Pemblokiran Dinonaktifkan)"
+        } else {
+            val remaining = prefs.remainingMinutes
+            "⏱ Sisa waktu: $remaining menit"
+        }
         
         val intent = Intent(this, GateActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
