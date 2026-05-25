@@ -12,7 +12,7 @@ Karena aplikasi ini tidak dipublikasikan ke Google Play Store (untuk menghindari
 
 ### Langkah 1: Mengunduh File APK
 1. Di bagian atas halaman GitHub ini, buka folder **`.build-outputs`**.
-2. Klik pada file bernama **`MathGate v1.0.apk`**.
+2. Klik pada file bernama **`app-debug.apk`**.
 3. Klik tombol **Download** (atau ikon unduh/tombol "Raw") di sebelah kanan atas untuk mulai mengunduh file APK ke perangkat Anda.
 
 ### Langkah 2: Mengaktifkan Izin Sumber Tidak Dikenal (Unknown Sources)
