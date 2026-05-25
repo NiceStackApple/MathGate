@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FF0D9488"
+        android:pathData="M0,0 h108 v108 h-108 z"/>
+    <!-- Notebook body -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M34,22 h40 a6,6 0,0 1,6 6 v52 a6,6 0,0 1,-6 6 h-40 a6,6 0,0 1,-6,-6 v-52 a6,6 0,0 1,6,-6 z"/>
+    <!-- Binder rings -->
+    <path
+        android:fillColor="#FFD1D5DB"
+        android:pathData="M24,28 h8 v4 h-8 z M24,40 h8 v4 h-8 z M24,52 h8 v4 h-8 z M24,64 h8 v4 h-8 z"/>
+    <!-- Ruled lines -->
+    <path
+        android:fillColor="#FF9CA3AF"
+        android:pathData="M40,34 h26 v2 h-26 z M40,46 h26 v2 h-26 z M40,58 h26 v2 h-26 z M40,70 h20 v2 h-20 z"/>
+</vector>

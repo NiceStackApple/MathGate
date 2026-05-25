@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Sophisticated background gradient -->
+    <path
+        android:fillColor="#FF0F172A"
+        android:pathData="M0,0 h108 v108 h-108 z"/>
+    <!-- Sleek Grid Accent in Background -->
+    <path
+        android:fillColor="#1538BDF8"
+        android:pathData="M10,10 h88 v88 h-88 z"/>
+    <!-- Outer Gate Symbol -->
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M34,28 h40 v8 h-40 z"/>
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M38,36 h10 v44 h-10 z"/>
+    <path
+        android:fillColor="#FF38BDF8"
+        android:pathData="M60,36 h10 v44 h-10 z"/>
+    <!-- Central Lock Indicator -->
+    <path
+        android:fillColor="#FF10B981"
+        android:pathData="M48,46 h12 v12 h-12 z"/>
+</vector>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Math Gate</string>
+    <string name="accessibility_service_description">Layanan ini digunakan oleh Math Gate untuk memonitor sisa waktu screen time anak serta memblokir tombol navigasi seperti Home, Back, dan Recent Apps saat kuota harian habis.</string>
+</resources>

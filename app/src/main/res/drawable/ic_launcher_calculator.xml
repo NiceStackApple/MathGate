@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Calculator background -->
+    <path
+        android:fillColor="#FF1E293B"
+        android:pathData="M0,0 h108 v108 h-108 z"/>
+    <!-- Calculator frame -->
+    <path
+        android:fillColor="#FF475569"
+        android:pathData="M32,24 h44 a6,6 0,0 1,6,6 v48 a6,6 0,0 1,-6,6 h-44 a6,6 0,0 1,-6,-6 v-48 a6,6 0,0 1,6,-6 z"/>
+    <!-- Screen -->
+    <path
+        android:fillColor="#FF0F172A"
+        android:pathData="M38,30 h32 v10 h-32 z"/>
+    <!-- Simulated numbers -->
+    <path
+        android:fillColor="#FF10B981"
+        android:pathData="M62,33 h5 v4 h-5 z"/>
+    <!-- Buttons -->
+    <path
+        android:fillColor="#FF64748B"
+        android:pathData="M38,46 h8 v6 h-8 z M50,46 h8 v6 h-8 z M62,46 h8 v6 h-8 z"/>
+    <path
+        android:fillColor="#FF64748B"
+        android:pathData="M38,56 h8 v6 h-8 z M50,56 h8 v6 h-8 z M62,56 h8 v6 h-8 z"/>
+    <path
+        android:fillColor="#FFF59E0B"
+        android:pathData="M38,66 h20 v6 h-20 z"/>
+</vector>

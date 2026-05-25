@@ -1,0 +1,6 @@
+{
+  "name": "Math Gate",
+  "description": "Parental Control + Math Challenge Screen Time Manager",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
