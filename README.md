@@ -37,7 +37,7 @@ Saat waktu penggunaan habis, pengguna perlu menyelesaikan tantangan matematika u
 
 1. Download file APK dari `release`
 2. Install APK di perangkat Android
-3. Jika muncul peringatan dari Play Protect, pilih **Detail** → **Tetap instal** atau masuk ke app info play store, kemudian disable sementara, kemudian baru enable play store setelah aplikasi terinstall
+3. Jika muncul peringatan dari Play Protect, pilih **Detail** → **Tetap instal** atau masuk ke google play store, klik profile di pojok kanan atas, klik **Play protect** dan nonaktifkan sementara 
 
 > Catatan: Peringatan dapat muncul karena aplikasi diinstal dari luar Play Store.
 
