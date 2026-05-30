@@ -33,9 +33,9 @@ Saat waktu penggunaan habis, pengguna perlu menyelesaikan tantangan matematika u
 * Mode penyamaran ikon aplikasi
 * Berjalan di latar belakang agar fitur tetap aktif
 
-## Install
+## Cara Install
 
-1. Buka halaman **Releases** pada repository GitHub ini.
+1. Buka halaman **Releases** pada repository GitHub ini (Scroll paling bawah jika di browser android).
 2. Download file **app-debug.apk** dari rilis terbaru.
 3. Buka file APK yang telah diunduh dan mulai proses instalasi.
 
