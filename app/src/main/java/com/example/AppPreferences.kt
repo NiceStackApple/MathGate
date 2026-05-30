@@ -26,6 +26,14 @@ class AppPreferences(context: Context) {
         private const val KEY_SIMULATION_MODE = "simulation_mode"
         private const val KEY_LAST_TICK_TIME = "last_tick_time"
         private const val KEY_SLEEP_MODE = "is_sleep_mode"
+
+        // Parental Lockout safety limits
+        private const val KEY_MAX_WRONG_ATTEMPTS = "max_wrong_attempts"
+        private const val KEY_MAX_CONSECUTIVE_REGENS = "max_consecutive_regens"
+        private const val KEY_LOCKOUT_DURATION_MINUTES = "lockout_duration_minutes"
+        private const val KEY_LOCKOUT_EXPIRY_TIMESTAMP = "lockout_expiry_timestamp"
+        private const val KEY_CURRENT_WRONG_ATTEMPTS = "current_wrong_attempts"
+        private const val KEY_CURRENT_CONSECUTIVE_REGENS = "current_consecutive_regens"
     }
 
     var isSetupCompleted: Boolean
@@ -75,6 +83,30 @@ class AppPreferences(context: Context) {
     var isSleepMode: Boolean
         get() = prefs.getBoolean(KEY_SLEEP_MODE, false)
         set(value) = prefs.edit().putBoolean(KEY_SLEEP_MODE, value).apply()
+
+    var maxWrongAttempts: Int
+        get() = prefs.getInt(KEY_MAX_WRONG_ATTEMPTS, 5)
+        set(value) = prefs.edit().putInt(KEY_MAX_WRONG_ATTEMPTS, value).apply()
+
+    var maxConsecutiveRegens: Int
+        get() = prefs.getInt(KEY_MAX_CONSECUTIVE_REGENS, 5)
+        set(value) = prefs.edit().putInt(KEY_MAX_CONSECUTIVE_REGENS, value).apply()
+
+    var lockoutDurationMinutes: Int
+        get() = prefs.getInt(KEY_LOCKOUT_DURATION_MINUTES, 15)
+        set(value) = prefs.edit().putInt(KEY_LOCKOUT_DURATION_MINUTES, value).apply()
+
+    var lockoutExpiryTimestamp: Long
+        get() = prefs.getLong(KEY_LOCKOUT_EXPIRY_TIMESTAMP, 0L)
+        set(value) = prefs.edit().putLong(KEY_LOCKOUT_EXPIRY_TIMESTAMP, value).apply()
+
+    var currentWrongAttempts: Int
+        get() = prefs.getInt(KEY_CURRENT_WRONG_ATTEMPTS, 0)
+        set(value) = prefs.edit().putInt(KEY_CURRENT_WRONG_ATTEMPTS, value).apply()
+
+    var currentConsecutiveRegens: Int
+        get() = prefs.getInt(KEY_CURRENT_CONSECUTIVE_REGENS, 0)
+        set(value) = prefs.edit().putInt(KEY_CURRENT_CONSECUTIVE_REGENS, value).apply()
 
     var pinLength: Int
         get() = prefs.getInt("parent_pin_length", 4)

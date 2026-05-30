@@ -21,6 +21,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -37,7 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -118,10 +121,10 @@ class MainActivity : ComponentActivity() {
                             onToggleSimulation = {
                                 viewModel.toggleSimulationMode()
                             },
-                            onSaveSettings = { quota, diff, reward, minQ, appName, selectedIconIdx ->
+                            onSaveSettings = { quota, diff, reward, minQ, appName, selectedIconIdx, maxWrong, maxRegens, lockoutMins ->
                                 val oldIconIndex = prefs.appIconIndex
                                 val iconChanged = oldIconIndex != selectedIconIdx
-                                viewModel.updateSettings(quota, diff, reward, minQ, appName, selectedIconIdx)
+                                viewModel.updateSettings(quota, diff, reward, minQ, appName, selectedIconIdx, maxWrong, maxRegens, lockoutMins)
                                 if (iconChanged) {
                                     Toast.makeText(this@MainActivity, "Pengaturan disamarkan! Aplikasi akan ditutup untuk menerapkan nama dan ikon baru...", Toast.LENGTH_LONG).show()
                                     window.decorView.postDelayed({
@@ -320,6 +323,7 @@ fun SetupWizardScreen(
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
 
     var step by remember { mutableStateOf(1) }
 
@@ -349,6 +353,11 @@ fun SetupWizardScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
             .padding(24.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })
+            }
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -851,7 +860,7 @@ fun SettingsDashboardScreen(
     isSimulationMode: Boolean,
     onTimeAdjusted: (Int) -> Unit,
     onToggleSimulation: () -> Unit,
-    onSaveSettings: (quota: Int, diff: String, reward: Int, minQ: Int, appName: String, selectedIconIdx: Int) -> Unit,
+    onSaveSettings: (quota: Int, diff: String, reward: Int, minQ: Int, appName: String, selectedIconIdx: Int, maxWrong: Int, maxRegens: Int, lockoutMins: Int) -> Unit,
     onLockScreen: () -> Unit,
     onResetApp: () -> Unit
 ) {
@@ -864,6 +873,9 @@ fun SettingsDashboardScreen(
     var minQuestionsInput by remember { mutableStateOf(prefs.minQuestions) }
     var appNameInput by remember { mutableStateOf(prefs.appDisplayName) }
     var appIconIdxInput by remember { mutableStateOf(prefs.appIconIndex) }
+    var maxWrongAttemptsInput by remember { mutableStateOf(prefs.maxWrongAttempts) }
+    var maxConsecutiveRegensInput by remember { mutableStateOf(prefs.maxConsecutiveRegens) }
+    var lockoutDurationMinutesInput by remember { mutableStateOf(prefs.lockoutDurationMinutes) }
 
     val context = LocalContext.current
 
@@ -1231,6 +1243,85 @@ fun SettingsDashboardScreen(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
+                // ANTI SPAM / LEARNING SAFETY BLOCK
+                Text(
+                    text = "KEAMANAN BELAJAR & LOCKOUT (ANTI-ASAL)",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF38BDF8),
+                    letterSpacing = 1.sp,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+
+                // 1. Max Wrong Attempts
+                Text(
+                    text = "Batas Salah per Soal: $maxWrongAttemptsInput kali",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
+                    fontSize = 13.sp
+                )
+                Text(
+                    text = "Soal otomatis diganti jika anak salah menjawab sebanyak ini berturut-turut.",
+                    fontSize = 10.sp,
+                    color = Color(0xFF94A3B8),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Slider(
+                    value = maxWrongAttemptsInput.toFloat(),
+                    onValueChange = { maxWrongAttemptsInput = it.toInt() },
+                    valueRange = 3f..10f,
+                    steps = 6,
+                    colors = SliderDefaults.colors(thumbColor = Color(0xFFF15A24), activeTrackColor = Color(0xFFF15A24))
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // 2. Max Consecutive Regens
+                Text(
+                    text = "Batas Ganti Soal Beruntun: $maxConsecutiveRegensInput kali",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
+                    fontSize = 13.sp
+                )
+                Text(
+                    text = "Soal terus-menerus diganti tanpa dijawab benar sebanyak ini, HP akan dikunci.",
+                    fontSize = 10.sp,
+                    color = Color(0xFF94A3B8),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Slider(
+                    value = maxConsecutiveRegensInput.toFloat(),
+                    onValueChange = { maxConsecutiveRegensInput = it.toInt() },
+                    valueRange = 2f..10f,
+                    steps = 7,
+                    colors = SliderDefaults.colors(thumbColor = Color(0xFFF59E0B), activeTrackColor = Color(0xFFF59E0B))
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // 3. Lockout Duration
+                Text(
+                    text = "Durasi Kunci Paksa HP: $lockoutDurationMinutesInput menit",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
+                    fontSize = 13.sp
+                )
+                Text(
+                    text = "Lama waktu HP dikunci sepenuhnya (tidak bisa mencoba soal) jika melanggar batas ganti soal.",
+                    fontSize = 10.sp,
+                    color = Color(0xFF94A3B8),
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+                Slider(
+                    value = lockoutDurationMinutesInput.toFloat(),
+                    onValueChange = { lockoutDurationMinutesInput = it.toInt() },
+                    valueRange = 5f..120f,
+                    steps = 22,
+                    colors = SliderDefaults.colors(thumbColor = Color(0xFFEF4444), activeTrackColor = Color(0xFFEF4444))
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
                 // APP DISGUISE PANEL
                 Text(
                     text = "PENYAMARAN APLIKASI (DISGUISE)",
@@ -1304,7 +1395,10 @@ fun SettingsDashboardScreen(
                             rewardPerQuestionInput,
                             minQuestionsInput,
                             appNameInput,
-                            appIconIdxInput
+                            appIconIdxInput,
+                            maxWrongAttemptsInput,
+                            maxConsecutiveRegensInput,
+                            lockoutDurationMinutesInput
                         )
                     },
                     modifier = Modifier.fillMaxWidth().testTag("save_settings_button"),

@@ -133,12 +133,238 @@ fun GateUnlockFlow(
     var isAnswerSuccessScreen by remember { mutableStateOf(false) }
     var latestRewardEarned by remember { mutableStateOf(0) }
 
+    // Pre-calculate lockout time remaining
+    var lockoutTimeRemainingMs by remember { 
+        mutableStateOf(kotlin.math.max(0L, prefs.lockoutExpiryTimestamp - System.currentTimeMillis())) 
+    }
+    
+    // Parent PIN override state
+    var showParentOverride by remember { mutableStateOf(false) }
+    var overridePinInput by remember { mutableStateOf("") }
+
+    androidx.compose.runtime.LaunchedEffect(prefs.lockoutExpiryTimestamp) {
+        while (true) {
+            val now = System.currentTimeMillis()
+            val expiry = prefs.lockoutExpiryTimestamp
+            if (now < expiry) {
+                lockoutTimeRemainingMs = expiry - now
+                kotlinx.coroutines.delay(1000L)
+            } else {
+                lockoutTimeRemainingMs = 0L
+                break
+            }
+        }
+    }
+
     // Initialize or generate the first question
     if (currentQuestion == null) {
         currentQuestion = mathEngine.generateQuestion(difficulty)
     }
 
-    if (isAnswerSuccessScreen) {
+    if (lockoutTimeRemainingMs > 0) {
+        // LOCKOUT SCREEN WIH LAUNCHED EFFECT & PARENT PIN OVERRIDE
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Lock,
+                contentDescription = "Device Locked",
+                tint = Color(0xFFEF4444),
+                modifier = Modifier.size(64.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "MathGate Terkunci! 🔒",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Batas jawaban salah telah terlampaui. Ponsel dikunci total untuk memulihkan konsentrasi anak belajar.",
+                fontSize = 12.sp,
+                color = Color(0xFF94A3B8),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Timer Display
+            val minutes = (lockoutTimeRemainingMs / 1000) / 60
+            val seconds = (lockoutTimeRemainingMs / 1000) % 60
+            val timerText = String.format("%02d:%02d", minutes, seconds)
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier.width(220.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "SISA WAKTU BLOKIR",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFEF4444),
+                        letterSpacing = 1.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = timerText,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color(0xFFEF4444),
+                        fontFamily = FontFamily.Monospace
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            if (!showParentOverride) {
+                Button(
+                    onClick = { showParentOverride = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF334155), contentColor = Color.White),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.width(220.dp)
+                ) {
+                    Text("Buka Blokir (Orang Tua)", fontSize = 13.sp)
+                }
+            } else {
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF334155)),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Masukkan PIN Orang Tua",
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                fontSize = 13.sp
+                            )
+                            IconButton(onClick = { 
+                                showParentOverride = false
+                                overridePinInput = ""
+                            }) {
+                                Icon(Icons.Default.Close, contentDescription = "Close", tint = Color(0xFF94A3B8), modifier = Modifier.size(16.dp))
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // PIN indicator circles
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        ) {
+                            val expectedLength = prefs.pinLength
+                            for (i in 0 until expectedLength) {
+                                val active = i < overridePinInput.length
+                                Box(
+                                    modifier = Modifier
+                                        .size(14.dp)
+                                        .background(if (active) Color(0xFF10B981) else Color(0xFF334155), CircleShape)
+                                        .border(1.dp, if (active) Color(0xFF10B981) else Color(0xFF475569), CircleShape)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Custom PIN Pad
+                        val pinKeys = listOf(
+                            listOf("1", "2", "3"),
+                            listOf("4", "5", "6"),
+                            listOf("7", "8", "9"),
+                            listOf("C", "0", "DEL")
+                        )
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            pinKeys.forEach { row ->
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    row.forEach { digit ->
+                                        Box(
+                                            contentAlignment = Alignment.Center,
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .aspectRatio(2.6f)
+                                                .clip(RoundedCornerShape(8.dp))
+                                                .background(Color(0xFF1E293B))
+                                                .clickable {
+                                                    when (digit) {
+                                                        "C" -> overridePinInput = ""
+                                                        "DEL" -> {
+                                                            if (overridePinInput.isNotEmpty()) {
+                                                                overridePinInput = overridePinInput.dropLast(1)
+                                                            }
+                                                        }
+                                                        else -> {
+                                                            if (overridePinInput.length < prefs.pinLength) {
+                                                                overridePinInput += digit
+                                                                if (overridePinInput.length == prefs.pinLength) {
+                                                                    if (prefs.verifyPin(overridePinInput)) {
+                                                                        prefs.lockoutExpiryTimestamp = 0L
+                                                                        prefs.currentWrongAttempts = 0
+                                                                        prefs.currentConsecutiveRegens = 0
+                                                                        lockoutTimeRemainingMs = 0L
+                                                                        overridePinInput = ""
+                                                                        showParentOverride = false
+                                                                        Toast.makeText(context, "Blokir Berhasil Dibuka!", Toast.LENGTH_SHORT).show()
+                                                                    } else {
+                                                                        Toast.makeText(context, "PIN Salah!", Toast.LENGTH_SHORT).show()
+                                                                        overridePinInput = ""
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                        ) {
+                                            Text(
+                                                text = digit,
+                                                color = if (digit == "C") Color(0xFFEF4444) else Color.White,
+                                                fontSize = 15.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else if (isAnswerSuccessScreen) {
         // Step 2: Success Reward Screen
         Column(
             modifier = Modifier
@@ -545,6 +771,10 @@ fun GateUnlockFlow(
                                 isFeedbackError = false
                                 feedbackMessage = "Jawaban Benar! 🎉"
                                 
+                                // Reset math safety parameters immediately on correct answer
+                                prefs.currentWrongAttempts = 0
+                                prefs.currentConsecutiveRegens = 0
+                                
                                 // Process direct reward immediately
                                 prefs.remainingMinutes = prefs.remainingMinutes + rewardPerQuestion
                                 latestRewardEarned = rewardPerQuestion
@@ -554,14 +784,45 @@ fun GateUnlockFlow(
                                 isAnswerSuccessScreen = true
                             } else {
                                 isFeedbackError = true
-                                val motivationalPhrases = listOf(
-                                    "Coba lagi, kamu pasti bisa! 💪",
-                                    "Belum tepat, hitung pelan-pelan ya! ✨",
-                                    "Jangan menyerah, coba sekali lagi! 🧠",
-                                    "Ulangi hitungannya, kamu hampir bisa! 🚀"
-                                )
-                                feedbackMessage = motivationalPhrases.random()
-                                currentAnswerInput = ""
+                                val maxWrong = prefs.maxWrongAttempts
+                                val currentWrong = prefs.currentWrongAttempts + 1
+                                prefs.currentWrongAttempts = currentWrong
+
+                                if (currentWrong >= maxWrong) {
+                                    // Hit max wrong attempts limit on single question, trigger regeneration
+                                    prefs.currentWrongAttempts = 0
+                                    val currentRegens = prefs.currentConsecutiveRegens + 1
+                                    prefs.currentConsecutiveRegens = currentRegens
+
+                                    val maxRegens = prefs.maxConsecutiveRegens
+                                    if (currentRegens >= maxRegens) {
+                                        // Max consecutive regenerations limit reached! Trigger parents lockout penalization!
+                                        val lockMins = prefs.lockoutDurationMinutes
+                                        prefs.lockoutExpiryTimestamp = System.currentTimeMillis() + (lockMins * 60L * 1000L)
+                                        prefs.currentWrongAttempts = 0
+                                        prefs.currentConsecutiveRegens = 0
+                                        lockoutTimeRemainingMs = lockMins * 60L * 1000L
+                                        currentAnswerInput = ""
+                                        feedbackMessage = "HP terkunci otomatis karena jawaban salah berturut-turut!"
+                                    } else {
+                                        // Regenerate question automatically and continue challenge
+                                        currentQuestion = mathEngine.generateQuestion(difficulty)
+                                        currentAnswerInput = ""
+                                        feedbackMessage = "Salah $maxWrong kali! Soal otomatis diganti.\n(Limit kunci: sisa ${maxRegens - currentRegens} kali ganti soal)"
+                                        Toast.makeText(context, "Batas percobaan salah tercapai. Soal diganti otomatis!", Toast.LENGTH_LONG).show()
+                                    }
+                                } else {
+                                    // Standard failed answer update with count warning indicator
+                                    val motivationalPhrases = listOf(
+                                        "Coba lagi, kamu pasti bisa! 💪",
+                                        "Belum tepat, hitung pelan-pelan ya! ✨",
+                                        "Jangan menyerah, coba sekali lagi! 🧠",
+                                        "Ulangi hitungannya, kamu hampir bisa! 🚀"
+                                    )
+                                    val remainingAttempts = maxWrong - currentWrong
+                                    feedbackMessage = "${motivationalPhrases.random()}\n(Salah: $currentWrong/$maxWrong, Soal diganti dalam $remainingAttempts percobaan)"
+                                    currentAnswerInput = ""
+                                }
                             }
                         }
                     },

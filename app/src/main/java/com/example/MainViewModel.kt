@@ -83,7 +83,10 @@ class MainViewModel(context: Context) : ViewModel() {
         rewMinutes: Int,
         minQ: Int,
         appName: String,
-        iconIndex: Int
+        iconIndex: Int,
+        maxWrongAttempts: Int,
+        maxConsecutiveRegens: Int,
+        lockoutDurationMinutes: Int
     ) {
         prefs.dailyQuota = quotaMinutes
         prefs.difficulty = diff
@@ -91,6 +94,9 @@ class MainViewModel(context: Context) : ViewModel() {
         prefs.minQuestions = minQ
         prefs.appDisplayName = appName
         prefs.appIconIndex = iconIndex
+        prefs.maxWrongAttempts = maxWrongAttempts
+        prefs.maxConsecutiveRegens = maxConsecutiveRegens
+        prefs.lockoutDurationMinutes = lockoutDurationMinutes
     }
 
     fun unlockDashboard() {
@@ -124,6 +130,12 @@ class MainViewModel(context: Context) : ViewModel() {
         prefs.minQuestions = 1
         prefs.appDisplayName = "Math Gate"
         prefs.isSimulationMode = false
+        prefs.maxWrongAttempts = 5
+        prefs.maxConsecutiveRegens = 5
+        prefs.lockoutDurationMinutes = 15
+        prefs.lockoutExpiryTimestamp = 0L
+        prefs.currentWrongAttempts = 0
+        prefs.currentConsecutiveRegens = 0
         
         ScreenTimeService.stop(context)
         _currentScreen.value = AppScreen.SetupWizard
