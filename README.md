@@ -1,4 +1,4 @@
-# ⏱️ MathGate v1.0 - Aplikasi Pengunci Screen Time Interaktif
+# ⏱️ MathGate v1.X - Aplikasi Pengunci Screen Time Interaktif
 
 Selamat datang di repositori **MathGate**, aplikasi manajemen screen time interaktif untuk Android yang cerdas dan efisien. Aplikasi ini menjaga produktivitas harian Anda atau anak-anak dengan mengunci perangkat secara otomatis ketika kuota waktu harian habis. Untuk membuka kembali perangkat, pengguna harus menyelesaikan **Tantangan Matematika** yang disesuaikan tingkat kesulitannya!
 
@@ -28,6 +28,7 @@ Android terkadang mendeteksi file APK independen buatan sendiri (yang tidak diaj
   1. Buka file APK yang sudah diunduh untuk memulai instalasi.
   2. Jika muncul kotak dialog peringatan dari Google Play Protect (biasanya berwarna merah/kuning), klik tulisan **"Detail"** atau **"Selengkapnya"** (More details).
   3. Klik pilihan **"Tetap Instal"** (Install anyway) untuk melanjutkan pemasangan hingga selesai.
+  4. Jika tidak ada tombol **"Tetap Instal"** maka masuk ke Google Play kemudian klik profile di pojok kanan atas, kemudian klik **"Play Protect"**, dan klik tombol setting, dan pause **"Scan apps with play protect"**
 
 ---
 
